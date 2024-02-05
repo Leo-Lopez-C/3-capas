@@ -1,0 +1,133 @@
+<!-- presentacion.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Atenciones para Celulares</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input,
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #resultadoContainer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Registro de Atenciones para Celulares</h1>
+
+    <form id="formularioAtencion">
+        <label for="id_dispositivo">ID del Dispositivo:</label>
+        <input type="text" id="id_dispositivo" name="id_dispositivo" required>
+
+        <label for="descripcion">Descripción de la Atención:</label>
+        <textarea id="descripcion" name="descripcion" required></textarea>
+
+        <label for="estimacion_costo">Estimación de Costos:</label>
+        <input type="number" id="estimacion_costo" name="estimacion_costo" required>
+
+        <label for="tiempo_estimado">Tiempo Estimado de Reparación (días):</label>
+        <input type="number" id="tiempo_estimado" name="tiempo_estimado" required>
+
+        <button type="button" onclick="registrarAtencion()">Registrar Atención</button>
+        <button type="button" onclick="visualizarDatos()">Visualizar Datos</button>
+    </form>
+
+    <div id="resultadoContainer"></div>
+
+    <script src="datos.js"></script>
+    <script src="negocio.js"></script>
+    <script>
+        const gestor = new GestorAtencionCelulares();
+
+        // Registrar dispositivos de muestra
+        for (let i = 1; i <= 5; i++) {
+            gestor.registrarDispositivo(`Dispositivo${i}`);
+        }
+
+        // Registrar atenciones de muestra después de registrar dispositivos
+        for (let i = 1; i <= 5; i++) {
+            gestor.registrarAtencion({
+                idDispositivo: `Dispositivo${i}`,
+                descripcion: `Atención de muestra ${i}`,
+                estimacionCosto: i * 100,
+                tiempoEstimado: i
+            });
+        }
+
+        // Visualizar atenciones después de registrar dispositivos y atenciones
+        gestor.visualizarAtenciones();
+
+        function registrarAtencion() {
+            const idDispositivo = document.getElementById('id_dispositivo').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const estimacionCosto = document.getElementById('estimacion_costo').value;
+            const tiempoEstimado = document.getElementById('tiempo_estimado').value;
+
+            gestor.registrarAtencion({
+                idDispositivo: idDispositivo,
+                descripcion: descripcion,
+                estimacionCosto: estimacionCosto,
+                tiempoEstimado: tiempoEstimado
+            });
+
+            // Actualizar la visualización de atenciones después de registrar
+            gestor.visualizarAtenciones();
+        }
+
+        function visualizarDatos() {
+            // Llamar a la función para visualizar atenciones
+            gestor.visualizarAtenciones();
+        }
+    </script>
+</body>
+</html>
